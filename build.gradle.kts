@@ -28,4 +28,7 @@ dependencies {
 
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
+    implementation("org.litote.kmongo:kmongo:4.4.0")
+    implementation("org.litote.kmongo:kmongo-async:4.4.0")
+
 }
