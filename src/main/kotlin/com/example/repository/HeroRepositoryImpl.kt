@@ -3,7 +3,9 @@ package com.example.repository
 import com.example.models.ApiResponse
 import com.example.models.Hero
 import org.litote.kmongo.KMongo
+import org.litote.kmongo.eq
 import org.litote.kmongo.getCollection
+import org.litote.kmongo.regex
 
 class HeroRepositoryImpl: HeroRepository {
 
@@ -59,7 +61,25 @@ class HeroRepositoryImpl: HeroRepository {
         return mapOf("prevPage" to prevPage, "nextPage" to nextPage)
     }
 
-    override suspend fun searchHeroes(name: String): ApiResponse {
-        TODO("Not yet implemented")
+    override suspend fun searchHeroes(name: String?): ApiResponse {
+        return ApiResponse(
+            success = true,
+            message = "ok",
+            heroes = findHeroes(name = name),
+        )
+    }
+
+
+    private fun findHeroes(name: String?): List<Hero> {
+        val founded = mutableListOf<Hero>()
+        return if(!name.isNullOrEmpty()){
+            val list : List<Hero> = col.find(Hero::name regex "^${name.lowercase().capitalize()}" ).toList()
+            list.forEach { hero ->
+                founded.add(hero)
+            }
+            founded
+        }else {
+             emptyList()
+        }
     }
 }
